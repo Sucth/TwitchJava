@@ -33,20 +33,6 @@ public class Main {
 
         screen.printInfo();
 
-        /*
-        for (Streamer streamer : streamerlist) {
-            System.out.println("Nom du streamer : " + streamer.getStreamerName());
-            System.out.println("Nombre de spectateurs : " + streamer.getViewerCount());
-            System.out.println("Activité : " + streamer.getActivity());
-            System.out.println("Nombre d'heures de streaming : " + streamer.getStreamHours());
-            System.out.println("Nombre de followers : " + streamer.getFollowerCount());
-            System.out.println("Nombre de subcriptions : " + streamer.getSubscriberCount());
-            System.out.println("En live : " + streamer.isLive());
-            System.out.println();
-        }
-
-         */
-
 
     }
 }
