@@ -1,21 +1,26 @@
 package Screen;
 
 import Streamer.Streamer;
+import Chat.Chat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Screen {
     private List<Streamer> streamers;
+    private List<String> pseudoList;
+
+    private List<String> chatList;
+    private int Menu;
+
+    Chat chatTwitch;
 
     public Screen(List<Streamer> streamers) {
         this.streamers = streamers;
     }
-
     public void printInfo() {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("====MENU====");
         System.out.println("1. VALORANT");
         System.out.println("2. F1");
         System.out.println("3. GTA");
@@ -45,6 +50,7 @@ public class Screen {
 
         if (!foundStreamer) {
             System.out.println("Aucun streamer en train de jouer à " + getActivityFromInput(inputString) + ".");
+            Menu = 2;
             return;
         }
 
@@ -58,9 +64,68 @@ public class Screen {
         System.out.println("Nombre d'heures de streaming : " + chosenStreamer.getStreamHours());
         System.out.println("Nombre de followers : " + chosenStreamer.getFollowerCount());
         System.out.println("Nombre de subcriptions : " + chosenStreamer.getSubscriberCount());
-        System.out.println("En live : " + chosenStreamer.isLive());
+        System.out.println("En live : " + chosenStreamer.isLive() + "\n");
+
+        System.out.println("Vous regardez " + chosenStreamer.getStreamerName());
+
+        System.out.println("1. Quitter L'app");
+        System.out.println("2. Retourner au Menu");
+        System.out.println("3. Chat");
+
+        System.out.println("Quelle Activité vous interesse ?");
+        int inputMenu = Integer.parseInt(scanner.nextLine());
+
+        if (inputMenu == 3){
+            Chatfct();
+        }
+        Menu = inputMenu;
+
+
+
     }
 
+    public void Chatfct() {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Chat chatTwitch = new Chat();
+                String pseudo = chatTwitch.getRandomPseudo();
+                String chatPhrase = chatTwitch.getRandomChatPhrase();
+                System.out.println(pseudo + " : " + chatPhrase);
+            }
+        };
+        timer.schedule(task, 0, 1000);
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            if (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.equals("t")) {
+                    timer.cancel();
+
+                    System.out.println("Ecrivez");
+                    String inputchat = scanner.nextLine();
+                    System.out.println("Vous : " + inputchat);
+                    Chatfct();
+                    break;
+                } else if (line.equals("")) {
+                    timer.cancel();
+                    setmenuopt(2);
+                    System.out.println("gr");
+                    getmenuopt();
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setmenuopt(int Menu){
+        this.Menu = Menu;
+    }
+    public int getmenuopt(){
+        return Menu;
+    }
 
     private String getActivityFromInput(int input) {
         switch (input) {
@@ -86,5 +151,6 @@ public class Screen {
                 return "";
         }
     }
+
 
 }
