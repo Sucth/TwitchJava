@@ -34,10 +34,18 @@ public class Main {
 
         screen.printInfo();
 
-        if (screen.getmenuopt() == 2){
-            screen.printInfo();
-        }else {
-            System.out.println("Exit Twitch ...........");
+        while (true) {
+            System.out.println(screen.getMenuOption() + "bite");
+            if (screen.getMenuOption() == 2 || screen.getMenuOption() == 3) {
+                screen.setMenuOption(0);
+                screen.printInfo();
+            } else if (screen.isChatActive() == false) {
+                screen.setMenuOption(0);
+                screen.printInfo();
+            } else if (screen.getMenuOption() == 1){
+                System.out.println("Exit Twitch ...........");
+                break;
+            }
         }
 
     }
