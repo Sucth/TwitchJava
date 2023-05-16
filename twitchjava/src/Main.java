@@ -35,7 +35,6 @@ public class Main {
         screen.printInfo();
 
         while (true) {
-            System.out.println(screen.getMenuOption() + "bite");
             if (screen.getMenuOption() == 2 || screen.getMenuOption() == 3) {
                 screen.setMenuOption(0);
                 screen.printInfo();
