@@ -27,7 +27,6 @@ public class Screen {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("====MENU====");
-        System.out.println("0. FAVORI");
         System.out.println("1. VALORANT");
         System.out.println("2. F1");
         System.out.println("3. GTA");
@@ -38,77 +37,26 @@ public class Screen {
         System.out.println("8. CSGO");
         System.out.println("9. Minecraft");
         System.out.println("10. Quitter");
+        System.out.println("11. Afficher les streamers");
+        System.out.println("12. Quitter");
 
+        System.out.println("Quelle option vous intéresse ?");
+        int inputMenu = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Quelle Activité vous intéresse ?");
-        int inputStringactivchoice = Integer.parseInt(scanner.nextLine());
+        if (inputMenu == 11) {
+            printFavorites();
 
-        if (inputStringactivchoice == 0) {
-            System.out.println("1. Mettre un streamer en favori");
-            System.out.println("2. Voir les streamers favoris");
-            System.out.println("Entrez le numéro de l'option :");
-            int optionNumber = Integer.parseInt(scanner.nextLine());
-
-            if (optionNumber == 1) {
-                System.out.println("Liste de tous les streamers :");
-                int count = 1;
-                for (Streamer streamer : streamers) {
-                    System.out.println(count + ". " + streamer.getStreamerName());
-                    count++;
-                }
-
-                System.out.println("Entrez le numéro du streamer à ajouter aux favoris :");
-                int streamerNumber = Integer.parseInt(scanner.nextLine());
-                Streamer chosenStreamer = streamers.get(streamerNumber - 1);
-                favorites.add(chosenStreamer);
-                System.out.println("Le streamer " + chosenStreamer.getStreamerName() + " a été ajouté aux favoris.\n");
-            } else if (optionNumber == 2) {
-                System.out.println("Liste des streamers favoris :");
-                int count = 1;
-                for (Streamer streamer : favorites) {
-                    System.out.println(count + ". " + streamer.getStreamerName());
-                    count++;
-                }
-                System.out.println();
-
-                System.out.println("Choisissez un streamer en entrant le numéro correspondant :");
-                int streamerNumber = Integer.parseInt(scanner.nextLine());
-                Streamer chosenStreamer = favorites.get(streamerNumber - 1);
-
-                System.out.println("Nom du streamer : " + chosenStreamer.getStreamerName());
-                System.out.println("Nombre de spectateurs : " + chosenStreamer.getViewerCount());
-                System.out.println("Activité : " + chosenStreamer.getActivity());
-                System.out.println("Nombre d'heures de streaming : " + chosenStreamer.getStreamHours());
-                System.out.println("Nombre de followers : " + chosenStreamer.getFollowerCount());
-                System.out.println("Nombre de subscriptions : " + chosenStreamer.getSubscriberCount());
-                System.out.println("En live : " + chosenStreamer.isLive() + "\n");
-
-                System.out.println("Vous regardez " + chosenStreamer.getStreamerName());
-
-                System.out.println("1. Quitter L'app");
-                System.out.println("2. Retourner au Menu");
-                System.out.println("3. Chat");
-
-                System.out.println("Quelle option vous intéresse ?");
-                int inputMenu = Integer.parseInt(scanner.nextLine());
-
-                if (inputMenu == 3) {
-                    chatFunction();
-                } else if (inputMenu == 1) {
-                    System.out.println("Exit Twitch ...........");
-                    return;
-                }
-                menu = inputMenu;
-            }
-
+            printInfo();
+            return;
         }
-        else {
+
+
             boolean foundStreamer = false;
             int count = 1;
             List<Streamer> streamersFromActivity = new ArrayList<>();
 
             for (Streamer streamer : streamers) {
-                if (streamer.getActivity().equals(getActivityFromInput(inputStringactivchoice))) {
+                if (streamer.getActivity().equals(getActivityFromInput(inputMenu))) {
                     streamersFromActivity.add(streamer);
                     System.out.println(count + ". " + streamer.getViewerCount() + " viewers " + streamer.getStreamerName());
                     foundStreamer = true;
@@ -117,7 +65,7 @@ public class Screen {
             }
 
             if (!foundStreamer) {
-                System.out.println("Aucun streamer en train de jouer à " + getActivityFromInput(inputStringactivchoice) + ".");
+                System.out.println("Aucun streamer en train de jouer à " + getActivityFromInput(inputMenu) + ".");
                 menu = 2;
                 return;
             }
@@ -138,17 +86,66 @@ public class Screen {
             System.out.println("1. Quitter L'app");
             System.out.println("2. Retourner au Menu");
             System.out.println("3. Chat");
+            System.out.println("4. Favori");
 
             System.out.println("Quelle option vous intéresse ?");
-            int inputMenu = Integer.parseInt(scanner.nextLine());
+            int inputMenus = Integer.parseInt(scanner.nextLine());
 
-            if (inputMenu == 3){
-                chatFunction();
-            }
-            menu = inputMenu;
+            if (inputMenus == 3) {
+               chatFunction();
+            } else if (inputMenus == 4) {
+               favori(chosenStreamer);
+         }
+
+         menu = inputMenus;
+
+    }
+
+
+    public void favori(Streamer streamer) {
+        Scanner scanner = new Scanner(System.in);
+        favorites.add(streamer);
+        System.out.println("Le streamer " + streamer.getStreamerName() + " a été ajouté aux favoris.");
+
+
+        System.out.println("Quelle option vous intéresse ?");
+
+        System.out.println("1. Retourner au Menu");
+        int input = Integer.parseInt(scanner.nextLine());
+        if (input == 1){
+            printInfo();
         }
+    }
+
+    public void afficherStreamers() {
+        System.out.println("Liste des streamers :");
+        for (int i = 0; i < streamers.size(); i++) {
+            Streamer streamer = streamers.get(i);
+            System.out.println((i + 1) + ". " + streamer.getStreamerName());
+            System.out.println("   Activité : " + streamer.getActivity());
+            System.out.println("   Spectateurs : " + streamer.getViewerCount());
+            System.out.println("   Heures de streaming : " + streamer.getStreamHours());
+            System.out.println("   Followers : " + streamer.getFollowerCount());
+            System.out.println("   Subscriptions : " + streamer.getSubscriberCount());
+            System.out.println("   En live : " + streamer.isLive());
+            System.out.println();
+        }
+    }
 
 
+    private void printFavorites() {
+        System.out.println("Liste des streamers favoris :");
+        for (int i = 0; i < favorites.size(); i++) {
+            Streamer streamer = favorites.get(i);
+            System.out.println((i + 1) + ". " + streamer.getStreamerName());
+            System.out.println("   Activité : " + streamer.getActivity());
+            System.out.println("   Spectateurs : " + streamer.getViewerCount());
+            System.out.println("   Heures de streaming : " + streamer.getStreamHours());
+            System.out.println("   Followers : " + streamer.getFollowerCount());
+            System.out.println("   Subscriptions : " + streamer.getSubscriberCount());
+            System.out.println("   En live : " + streamer.isLive());
+            System.out.println();
+        }
     }
 
 
