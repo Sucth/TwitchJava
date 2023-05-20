@@ -1,6 +1,13 @@
 package Twitch;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 public class Twitch {
+    private static final Logger logger = Logger.getLogger(Twitch.class.getName());
     private String streamerName;
     private int viewerCount;
     private String activity;
@@ -49,14 +56,18 @@ public class Twitch {
 
     public void startStreaming() {
         if (!"streaming".equals(activity)) {
-            throw new IllegalStateException("Le streamer doit être en streaming pour pouvoir démarrer.");
+            String errorMessage = "Le streamer doit être en streaming pour pouvoir démarrer.";
+            logger.log(Level.SEVERE, errorMessage);
+            throw new IllegalStateException(errorMessage);
         }
         // Logique de démarrage du streaming
     }
 
     public void stopStreaming() {
         if (!"streaming".equals(activity)) {
-            throw new IllegalStateException("Le streamer doit être en streaming pour pouvoir s'arrêter.");
+            String errorMessage = "Le streamer doit être en streaming pour pouvoir s'arrêter.";
+            logger.log(Level.SEVERE, errorMessage);
+            throw new IllegalStateException(errorMessage);
         }
         // Logique d'arrêt du streaming
     }
